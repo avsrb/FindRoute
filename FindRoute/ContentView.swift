@@ -9,15 +9,37 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
+    
+    @State private var directions: [String] = []
+    @State private var showDirections = false
+    
     var body: some View {
         VStack {
-            MapView()
+            MapView(directions: $directions)
+            
             Button(action: {
-                
+                self.showDirections.toggle()
             }, label: {
                 Text("Show directions")
             })
+            .disabled(directions.isEmpty)
             .padding()
+        }.sheet(isPresented: $showDirections) {
+            VStack {
+                Text("Directions")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Divider().background(Color.blue)
+                
+                List {
+                    ForEach(0..<self.directions.count, id: \.self) { i in
+                        Text(self.directions[i])
+                            .padding()
+                    }
+                }
+            }
         }
     }
 }
@@ -34,7 +56,6 @@ struct MapView: UIViewRepresentable {
     typealias UIViewType = MKMapView
     
     @Binding var directions: [String]
-    
     func makeCoordinator() -> MapViewCoordinator {
         return MapViewCoordinator()
     }
@@ -70,6 +91,7 @@ struct MapView: UIViewRepresentable {
                 edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40),
                 animated: true
             )
+            self.directions = route.steps.map { $0.instructions }.filter{ !$0.isEmpty }
         }
         
         return mapView
