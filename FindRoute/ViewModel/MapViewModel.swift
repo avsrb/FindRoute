@@ -16,7 +16,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var permissionDenied = false
     @Published var mapType: MKMapType = .standard
     @Published var searchTxt = ""
-    @Published var places : [Place] = []
+    @Published var places: [Place] = []
     
     func updateMapType() {
         if mapType == .standard {
@@ -36,13 +36,12 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func searchQuery() {
+        places.removeAll()
+        
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchTxt
         
-        
         MKLocalSearch(request: request).start { (response, _) in
-            
-            places.removeAll()
             
             guard let result = response else { return }
             
@@ -50,6 +49,13 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 return Place(place: item.placemark)
             })
         }
+    }
+    
+    func selectPlace(place: Place) {
+        searchTxt = ""
+        
+//        guard let coordinate = place.placemark.location?.coordinate else { return }
+        
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

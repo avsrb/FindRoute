@@ -22,7 +22,7 @@ struct Home: View {
                 .ignoresSafeArea(.all, edges: .all)
             VStack {
                 
-                VStack {
+                VStack(spacing: 0) {
                     HStack {
                         
                         Image(systemName: "magnifyingglass")
@@ -36,12 +36,12 @@ struct Home: View {
                     .background(Color.white)
                     
                     if !mapData.places.isEmpty && mapData.searchTxt != "" {
+                        
                         ScrollView {
                             
                             VStack(spacing: 15) {
-                                // 13;38
-                                ForEach(mapData.places){ place in
-                                    Text(place.placemark.name ?? "" )
+                                ForEach(mapData.places) { place in
+                                    Text(place.place.name ?? "" )
                                         .foregroundColor(.black)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading)
@@ -49,6 +49,7 @@ struct Home: View {
                                     Divider()
                                 }
                             }
+                            .padding(.top)
                         }
                         .background(Color.white)
                     }
