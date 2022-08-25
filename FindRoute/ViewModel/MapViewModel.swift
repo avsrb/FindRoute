@@ -50,7 +50,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             })
         }
     }
-    
+
     func selectPlace(place: Place) {
         searchTxt = ""
         
@@ -64,6 +64,31 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         mapView.addAnnotation(pointAnnotstion)
         
         let coordinateRegion = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        
+        let p1 = MKPlacemark(coordinate: coordinate)
+        let p2 = MKPlacemark(coordinate: region.center)
+
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: p1)
+        request.destination = MKMapItem(placemark: p2)
+        request.transportType  = .automobile
+
+        let directions = MKDirections(request: request)
+        directions.calculate { response, error in
+            guard let route = response?.routes.first else { return }
+//            self.mapView.addAnnotations([p1,p2])
+            self.mapView.addOverlay(route.polyline)
+            self.mapView.setVisibleMapRect(
+                route.polyline.boundingMapRect,
+                edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40),
+                animated: true
+            )
+        }
+        
+        for overlay in mapView.overlays {
+
+             mapView.removeOverlay(overlay)
+         }
         
         mapView.setRegion(coordinateRegion, animated: true)
         mapView.setVisibleMapRect(mapView.visibleMapRect, animated: true)

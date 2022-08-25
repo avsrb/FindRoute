@@ -15,9 +15,7 @@ struct Home: View {
     
     var body: some View {
         ZStack {
-            // MapView..
             MapView()
-                // using is as environment object so that it can be used ints subview .....
                 .environmentObject(mapData)
                 .ignoresSafeArea(.all, edges: .all)
             VStack {
