@@ -79,6 +79,15 @@ struct Home: View {
                             .clipShape(Circle())
                     })
                     
+                    Button(action: mapData.updateTransportType, label: {
+                        
+                        Image(systemName: mapData.mapTransportType == .automobile ? "car.circle" : "figure.walk.circle")
+                            .font(.title2)
+                            .padding(10)
+                            .background(Color.primary)
+                            .clipShape(Circle())
+                    })
+                    
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding()

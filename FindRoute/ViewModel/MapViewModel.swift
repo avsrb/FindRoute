@@ -16,8 +16,17 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var permissionDenied = false
     @Published var cannotRoute = false
     @Published var mapType: MKMapType = .standard
+    @Published var mapTransportType: MKDirectionsTransportType = .automobile
     @Published var searchTxt = ""
     @Published var places: [Place] = []
+    
+    func updateTransportType() {
+        if mapTransportType == .automobile {
+            mapTransportType = .walking
+        } else {
+            mapTransportType = .automobile
+        }
+    }
     
     func updateMapType() {
         if mapType == .standard {
@@ -73,7 +82,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: p1)
         request.destination = MKMapItem(placemark: p2)
-        request.transportType  = .automobile
+        request.transportType = mapTransportType
 
         let directions = MKDirections(request: request)
         directions.calculate { response, error in
@@ -82,7 +91,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             self.mapView.addOverlay(route.polyline)
             self.mapView.setVisibleMapRect(
                 route.polyline.boundingMapRect,
-                edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40),
+                edgePadding: UIEdgeInsets(top: 100, left: 100, bottom: 100, right: 100),
                 animated: true
             )
         }
