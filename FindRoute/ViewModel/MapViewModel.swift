@@ -14,6 +14,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var mapView = MKMapView()
     @Published var region: MKCoordinateRegion!
     @Published var permissionDenied = false
+    @Published var cannotRoute = false
     @Published var mapType: MKMapType = .standard
     @Published var searchTxt = ""
     @Published var places: [Place] = []
@@ -52,6 +53,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     func selectPlace(place: Place) {
+        self.cannotRoute = false
         searchTxt = ""
         
         guard let coordinate = place.place.location?.coordinate else { return }
@@ -75,7 +77,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 
         let directions = MKDirections(request: request)
         directions.calculate { response, error in
-            guard let route = response?.routes.first else { return }
+            guard let route = response?.routes.first else { self.cannotRoute = true; return }
 //            self.mapView.addAnnotations([p1,p2])
             self.mapView.addOverlay(route.polyline)
             self.mapView.setVisibleMapRect(
@@ -84,6 +86,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 animated: true
             )
         }
+        
         
         for overlay in mapView.overlays {
 

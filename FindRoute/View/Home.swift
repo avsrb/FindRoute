@@ -78,6 +78,7 @@ struct Home: View {
                             .background(Color.primary)
                             .clipShape(Circle())
                     })
+                    
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding()
@@ -102,6 +103,10 @@ struct Home: View {
                     self.mapData.searchQuery()
                 }
             }
+        })
+        .alert(isPresented: $mapData.cannotRoute, content: {
+            
+            Alert(title: Text("Directions Not Available"), message: Text("Directions are not available between these location"), dismissButton: .default(Text("ok")))
         })
     }
 }
