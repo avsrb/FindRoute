@@ -45,6 +45,9 @@ struct Home: View {
                                         .foregroundColor(.black)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.leading)
+                                        .onTapGesture {
+                                            mapData.selectPlace(place: place)
+                                        }
                                     
                                     Divider()
                                 }
