@@ -50,11 +50,9 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
     
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        
-    }
+    func updateUIView(_ uiView: MKMapView, context: Context) {}
 
-    class MapViewCoordinator: NSObject, MKMapViewDelegate {
+    class Coordinator: NSObject, MKMapViewDelegate {
 
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             let renderer = MKPolylineRenderer(overlay: overlay)
@@ -64,7 +62,7 @@ struct MapView: UIViewRepresentable {
         }
     }
     
-    class Coordinator: NSObject, MKMapViewDelegate {
+//    class Coordinator: NSObject, MKMapViewDelegate {
         // MARK: Pin as in the subject
 //        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 //
@@ -78,5 +76,5 @@ struct MapView: UIViewRepresentable {
 //                return pinAnnotation
 //            }
 //        }
-    }
+//    }
 }
