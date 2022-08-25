@@ -62,6 +62,11 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotation(pointAnnotstion)
+        
+        let coordinateRegion = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        
+        mapView.setRegion(coordinateRegion, animated: true)
+        mapView.setVisibleMapRect(mapView.visibleMapRect, animated: true)
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
